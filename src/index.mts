@@ -3,7 +3,7 @@ import { Todo } from './models/Todo.mjs';
 
 const app = express(), PORT = 3000, todos: Todo[] = [
     new Todo('Buy milk'),
-    new Todo('Buy bread'),
+    new Todo('Buy bread', true),
     new Todo('Buy cheese')
 ];
 
@@ -34,17 +34,17 @@ app.get('/todos', (req, res) => {
                 const property = todo.getProperty(p);
 
                 return typeof property === 'string' ? property.toLowerCase() : property;
-            };    
-
-            if (p && !new Todo('').hasOwnProperty(p)) {
-                throw new Error(`Invalid property &lt${p}&gt. Property not found. Valid Properties of a Todo Object are:
-                    <ul>
-                    ${Object.keys(new Todo('')).map(key => `<li>${key}</li>`).join('')}
-                    </ul>`, { cause: 404 });
-            }
+            };
 
             todos.sort((t1, t2) => {
                 const propOfT1 = getFormatedProperty(t1), propOfT2 = getFormatedProperty(t2);
+
+                if ((p && !new Todo('').hasProperty(p)) || propOfT1 === undefined || propOfT2 === undefined) {
+                    throw new Error(`Invalid property &lt${p}&gt. Property not found. Valid Properties of a Todo Object are:
+                        <ul>
+                        ${Object.keys(new Todo('')).map(key => `<li>${key}</li>`).join('')}
+                        </ul>`, { cause: 404 });
+                }
 
                 switch (sort) {
                     case 'asc':
