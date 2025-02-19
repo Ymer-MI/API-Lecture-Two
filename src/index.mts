@@ -36,7 +36,7 @@ app.get('/todos', (req, res) => {
                 return typeof property === 'string' ? property.toLowerCase() : property;
             };    
 
-            if (p && !todos.hasOwnProperty(p)) {
+            if (p && !new Todo('').hasOwnProperty(p)) {
                 throw new Error(`Invalid property &lt${p}&gt. Property not found. Valid Properties of a Todo Object are:
                     <ul>
                     ${Object.keys(new Todo('')).map(key => `<li>${key}</li>`).join('')}
